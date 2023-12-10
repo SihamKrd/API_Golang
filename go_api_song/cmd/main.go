@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
-	"middleware/example/internal/controllers/collections"
+	"middleware/example/internal/controllers/songs"
 	"middleware/example/internal/helpers"
 	_ "middleware/example/internal/models"
 	"net/http"
@@ -30,9 +30,12 @@ func init() {
 		logrus.Fatalf("error while opening database : %s", err.Error())
 	}
 	schemes := []string{
-		`CREATE TABLE IF NOT EXISTS collections (
+		`CREATE TABLE IF NOT EXISTS songs (
 			id VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
-			content VARCHAR(255) NOT NULL
+			title VARCHAR(255) NOT NULL,
+			artist VARCHAR(255) NOT NULL,
+			album VARCHAR(255) NOT NULL,
+			genre VARCHAR(255) NOT NULL
 		);`,
 	}
 	for _, scheme := range schemes {
