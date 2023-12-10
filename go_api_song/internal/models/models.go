@@ -4,7 +4,10 @@ import (
 	"github.com/gofrs/uuid"
 )
 
-type Collection struct {
-	Id      *uuid.UUID `json:"id"`
-	Content string     `json:"content"`
-}
+type Song struct {
+	Id     int    `json:"id"`
+	Title  string `json:"title"`
+	Artist string `json:"artist"`
+	Album  string `json:"album"`
+	Genre  string `json:"genre"`
+	}
