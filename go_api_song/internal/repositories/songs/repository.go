@@ -63,3 +63,20 @@ func CreateSong(song models.Song) error {
                      songID.String(), song.Title, song.Artist, song.Album, song.Genre)
 	return err
 }
+
+func UpdateSong(song models.Song) error {
+    db, err := helpers.OpenDB()
+    if err != nil {
+        return err
+    }
+    defer helpers.CloseDB(db)
+
+    statement, err := db.Prepare("UPDATE songs SET title=?, artist=?, album=?, genre=? WHERE id=?")
+    if err != nil {
+        return err
+    }
+    defer statement.Close()
+
+    _, err = statement.Exec(song.Title, song.Artist, song.Album, song.Genre, song.ID.String())
+    return err
+}
