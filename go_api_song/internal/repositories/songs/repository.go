@@ -64,7 +64,7 @@ func CreateSong(song models.Song) error {
 	return err
 }
 
-func UpdateSong(song models.Song) error {
+func UpdateSong(id uuid.UUID, song models.Song) error {
     db, err := helpers.OpenDB()
     if err != nil {
         return err
@@ -77,6 +77,6 @@ func UpdateSong(song models.Song) error {
     }
     defer statement.Close()
 
-    _, err = statement.Exec(song.Title, song.Artist, song.Album, song.Genre, song.ID.String())
+    _, err = statement.Exec(song.Title, song.Artist, song.Album, song.Genre, id.String())
     return err
 }

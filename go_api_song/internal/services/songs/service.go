@@ -64,3 +64,15 @@ func (s *SongService) CreateSong(song models.Song) error {
     return nil
 }
 
+
+func (s *SongService) UpdateSong(id uuid.UUID, song models.Song) error {
+    err := repository.UpdateSong(id, song)
+    if err != nil {
+        logrus.Errorf("error updating song: %s", err.Error())
+        return &models.CustomError{
+            Message: "Error updating song",
+            Code:    http.StatusInternalServerError,
+        }
+    }
+    return nil
+}
