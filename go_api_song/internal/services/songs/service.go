@@ -9,6 +9,14 @@ import (
 	"net/http"
 )
 
+type SongService struct {
+    db *sql.DB
+}
+
+func NewSongService(db *sql.DB) *SongService {
+    return &SongService{db: db}
+}
+
 func GetAllSongs() ([]models.Song, error) {
 	var err error
 	// calling repository

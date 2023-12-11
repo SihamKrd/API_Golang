@@ -61,5 +61,5 @@ func CreateSong(song models.Song) error {
 
     _, err = db.Exec("INSERT INTO songs (id, title, artist, album, genre) VALUES (?, ?, ?, ?, ?)", 
                      songID.String(), song.Title, song.Artist, song.Album, song.Genre)
-    return err
+	return err
 }

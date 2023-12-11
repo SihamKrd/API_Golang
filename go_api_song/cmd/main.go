@@ -4,16 +4,28 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
 	"middleware/example/internal/controllers/songs"
+	services "middleware/example/internal/services/songs"
 	"middleware/example/internal/helpers"
 	_ "middleware/example/internal/models"
 	"net/http"
 )
 
 func main() {
+	db, err := helpers.OpenDB()
+    if err != nil {
+        logrus.Fatalf("error while opening database: %s", err.Error())
+    }
+    defer helpers.CloseDB(db)
+
 	r := chi.NewRouter()
+
+	songService := services.NewSongService(db)
 
 	r.Route("/songs", func(r chi.Router) {
 		r.Get("/", songs.GetSongs)
+		r.Post("/", func(w http.ResponseWriter, r *http.Request) {
+			songs.CreateSong(w, r, songService)  // Route POST pour créer une chanson
+		})
 		r.Route("/{id}", func(r chi.Router) {
 			r.Use(songs.Ctx)
 			r.Get("/", songs.GetSong)
