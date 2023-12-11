@@ -32,6 +32,9 @@ func main() {
 			r.Put("/", func(w http.ResponseWriter, r *http.Request) { // Route PUT pour mettre à jour une chanson spécifique
 				songs.UpdateSong(w, r, songService)
 			})
+			r.Delete("/", func(w http.ResponseWriter, r *http.Request) { // Route DELETE pour supprimer une chanson spécifique
+				songs.DeleteSong(w, r, songService)
+			})
 		})
 	})
 
