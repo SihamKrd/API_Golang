@@ -29,6 +29,9 @@ func main() {
 		r.Route("/{id}", func(r chi.Router) {
 			r.Use(songs.Ctx)
 			r.Get("/", songs.GetSong)
+			r.Put("/", func(w http.ResponseWriter, r *http.Request) { // Route PUT pour mettre à jour une chanson spécifique
+				songs.UpdateSong(w, r, songService)
+			})
 		})
 	})
 
