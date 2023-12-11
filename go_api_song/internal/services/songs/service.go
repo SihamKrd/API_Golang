@@ -43,3 +43,16 @@ func GetSongById(id uuid.UUID) (*models.Song, error) {
 
 	return song, err
 }
+
+func (s *SongService) CreateSong(song models.Song) error {
+    err := repository.CreateSong(song)
+    if err != nil {
+        logrus.Errorf("error creating song: %s", err.Error())
+        return &models.CustomError{
+            Message: "Error creating song",
+            Code:    http.StatusInternalServerError,
+        }
+    }
+    return nil
+}
+
