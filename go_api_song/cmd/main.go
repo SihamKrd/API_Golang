@@ -12,11 +12,11 @@ import (
 func main() {
 	r := chi.NewRouter()
 
-	r.Route("/collections", func(r chi.Router) {
-		r.Get("/", collections.GetCollections)
+	r.Route("/songs", func(r chi.Router) {
+		r.Get("/", songs.GetSongs)
 		r.Route("/{id}", func(r chi.Router) {
-			r.Use(collections.Ctx)
-			r.Get("/", collections.GetCollection)
+			r.Use(songs.Ctx)
+			r.Get("/", songs.GetSong)
 		})
 	})
 
