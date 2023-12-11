@@ -7,7 +7,17 @@ import (
     "middleware/example/internal/services/songs"
     "github.com/sirupsen/logrus"
 )
-
+// CreateSong
+// @Tags         songs
+// @Summary      Create a new song
+// @Description  Create a new song with the provided information
+// @Accept       json
+// @Produce      json
+// @Param        song  body      models.Song  true  "Song Data"
+// @Success      201    {object}  models.Song
+// @Failure      400    "Invalid request body"
+// @Failure      500    "Internal Server Error"
+// @Router       /songs [post]
 func CreateSong(w http.ResponseWriter, r *http.Request, service *songs.SongService) {
     var song models.Song
     if err := json.NewDecoder(r.Body).Decode(&song); err != nil {

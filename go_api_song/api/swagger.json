@@ -14,20 +14,20 @@
     },
     "basePath": "/",
     "paths": {
-        "/collections": {
+        "/songs": {
             "get": {
-                "description": "Get collections.",
+                "description": "Get songs.",
                 "tags": [
-                    "collections"
+                    "songs"
                 ],
-                "summary": "Get collections.",
+                "summary": "Get songs.",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Collection"
+                                "$ref": "#/definitions/models.Song"
                             }
                         }
                     },
@@ -35,19 +35,57 @@
                         "description": "Something went wrong"
                     }
                 }
+            },
+            "post": {
+                "description": "Create a new song with the provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "songs"
+                ],
+                "summary": "Create a new song",
+                "parameters": [
+                    {
+                        "description": "Song Data",
+                        "name": "song",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Song"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Song"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
             }
         },
-        "/collections/{id}": {
+        "/songs/{id}": {
             "get": {
-                "description": "Get a collection.",
+                "description": "Get a song.",
                 "tags": [
-                    "collections"
+                    "songs"
                 ],
-                "summary": "Get a collection.",
+                "summary": "Get a song.",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Collection UUID formatted ID",
+                        "description": "Song UUID formatted ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -57,7 +95,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Collection"
+                            "$ref": "#/definitions/models.Song"
                         }
                     },
                     "422": {
@@ -67,17 +105,92 @@
                         "description": "Something went wrong"
                     }
                 }
+            },
+            "put": {
+                "description": "Update a song by its ID with new information",
+                "tags": [
+                    "songs"
+                ],
+                "summary": "Update a song",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Song ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated song data",
+                        "name": "song",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Song"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Song successfully updated",
+                        "schema": {
+                            "$ref": "#/definitions/models.Song"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID format or invalid request body"
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Failed to update song"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a song by its ID",
+                "tags": [
+                    "songs"
+                ],
+                "summary": "Delete a song",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Song ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content - Successfully deleted"
+                    },
+                    "400": {
+                        "description": "Invalid ID format"
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Failed to delete song"
+                    }
+                }
             }
         }
     },
     "definitions": {
-        "models.Collection": {
+        "models.Song": {
             "type": "object",
             "properties": {
-                "content": {
+                "album": {
+                    "type": "string"
+                },
+                "artist": {
+                    "type": "string"
+                },
+                "genre": {
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }

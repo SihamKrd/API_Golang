@@ -9,6 +9,16 @@ import (
     "github.com/gofrs/uuid"
 )
 
+// UpdateSong
+// @Tags         songs
+// @Summary      Update a song
+// @Description  Update a song by its ID with new information
+// @Param        id      path      string       true  "Song ID"
+// @Param        song    body      models.Song  true  "Updated song data"
+// @Success      200     {object}  models.Song  "Song successfully updated"
+// @Failure      400     "Invalid ID format or invalid request body"
+// @Failure      500     "Internal Server Error - Failed to update song"
+// @Router       /songs/{id} [put]
 func UpdateSong(w http.ResponseWriter, r *http.Request, service *songs.SongService) {
     idStr := chi.URLParam(r, "id")
     id, err := uuid.FromString(idStr)
