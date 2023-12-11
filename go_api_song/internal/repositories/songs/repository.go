@@ -80,3 +80,20 @@ func UpdateSong(id uuid.UUID, song models.Song) error {
     _, err = statement.Exec(song.Title, song.Artist, song.Album, song.Genre, id.String())
     return err
 }
+
+func DeleteSong(id uuid.UUID) error {
+    db, err := helpers.OpenDB()
+    if err != nil {
+        return err
+    }
+    defer helpers.CloseDB(db)
+
+    statement, err := db.Prepare("DELETE FROM songs WHERE id=?")
+    if err != nil {
+        return err
+    }
+    defer statement.Close()
+
+    _, err = statement.Exec(id.String())
+    return err
+}
