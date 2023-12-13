@@ -80,3 +80,20 @@ func UpdateUser(id uuid.UUID, user models.User) error {
     _, err = statement.Exec(user.Name, user.Username, user.Email, id.String())
     return err
 }
+
+func DeleteUser(id uuid.UUID) error {
+    db, err := helpers.OpenDB()
+    if err != nil {
+        return err
+    }
+    defer helpers.CloseDB(db)
+
+    statement, err := db.Prepare("DELETE FROM users WHERE id=?")
+    if err != nil {
+        return err
+    }
+    defer statement.Close()
+
+    _, err = statement.Exec(id.String())
+    return err
+}
