@@ -48,3 +48,18 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 	}
 	return &user, err
 }
+
+func CreateUser(user models.User) error {
+    db, err := helpers.OpenDB()
+    if err != nil {
+        return err
+    }
+    defer helpers.CloseDB(db)
+
+    // Génération d'un nouvel UUID pour la chanson
+    userID := uuid.Must(uuid.NewV4())
+
+    _, err = db.Exec("INSERT INTO users (id, name, username, email) VALUES (?, ?, ?, ?)",
+						userID.String(), user.Name, user.Username, user.Email)
+	return err
+}
