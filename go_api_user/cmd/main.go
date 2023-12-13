@@ -29,6 +29,9 @@ func main() {
 		r.Route("/{id}", func(r chi.Router) {
 			r.Use(users.Ctx)
 			r.Get("/", users.GetUser)
+			r.Put("/", func(w http.ResponseWriter, r *http.Request) { // Route PUT pour mettre à jour un utilisateur spécifique
+				users.UpdateUser(w, r, userService)
+			})
 		})
 	})
 
