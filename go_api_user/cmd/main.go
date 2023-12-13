@@ -4,6 +4,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/sirupsen/logrus"
 	"middleware/example/internal/controllers/users"
+	services "middleware/example/internal/services/users"
 	"middleware/example/internal/helpers"
 	_ "middleware/example/internal/models"
 	"net/http"
@@ -17,9 +18,14 @@ func main() {
     defer helpers.CloseDB(db)
 
 	r := chi.NewRouter()
+	
+	userService := services.NewUserService(db)
 
 	r.Route("/users", func(r chi.Router) {
 		r.Get("/", users.GetUsers)
+		r.Post("/", func(w http.ResponseWriter, r *http.Request) {
+			users.CreateUser(w, r, userService)  // Route POST pour créer un utilisateur
+		})
 		r.Route("/{id}", func(r chi.Router) {
 			r.Use(users.Ctx)
 			r.Get("/", users.GetUser)
