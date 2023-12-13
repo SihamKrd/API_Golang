@@ -63,3 +63,20 @@ func CreateUser(user models.User) error {
 						userID.String(), user.Name, user.Username, user.Email)
 	return err
 }
+
+func UpdateUser(id uuid.UUID, user models.User) error {
+    db, err := helpers.OpenDB()
+    if err != nil {
+        return err
+    }
+    defer helpers.CloseDB(db)
+
+    statement, err := db.Prepare("UPDATE users SET name=?, username=?, email=? WHERE id=?")
+    if err != nil {
+        return err
+    }
+    defer statement.Close()
+
+    _, err = statement.Exec(user.Name, user.Username, user.Email, id.String())
+    return err
+}
