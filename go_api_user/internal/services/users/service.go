@@ -51,3 +51,15 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 
 	return user, err
 }
+
+func (s *UserService) CreateUser(user models.User) error {
+    err := repository.CreateUser(user)
+    if err != nil {
+        logrus.Errorf("error creating user: %s", err.Error())
+        return &models.CustomError{
+            Message: "Error creating user",
+            Code:    http.StatusInternalServerError,
+        }
+    }
+    return nil
+}
