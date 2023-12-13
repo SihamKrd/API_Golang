@@ -8,6 +8,17 @@ import (
     "github.com/sirupsen/logrus"
 )
 
+// CreateUser
+// @Tags         users
+// @Summary      Create a new user
+// @Description  Create a new user with the provided information
+// @Accept       json
+// @Produce      json
+// @Param        user  body      models.User  true  "User Data"
+// @Success      201    {object}  models.User
+// @Failure      400    "Invalid request body"
+// @Failure      500    "Internal Server Error"
+// @Router       /users [post]
 func CreateUser(w http.ResponseWriter, r *http.Request, service *users.UserService) {
     var user models.User
     if err := json.NewDecoder(r.Body).Decode(&user); err != nil {

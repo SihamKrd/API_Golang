@@ -1,10 +1,14 @@
 basePath: /
 definitions:
-  models.Collection:
+  models.User:
     properties:
-      content:
+      email:
         type: string
       id:
+        type: string
+      name:
+        type: string
+      username:
         type: string
     type: object
 info:
@@ -15,26 +19,69 @@ info:
   title: middleware/example
   version: 1.0.0
 paths:
-  /collections:
+  /users:
     get:
-      description: Get collections.
+      description: Get users.
       responses:
         "200":
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Collection'
+              $ref: '#/definitions/models.User'
             type: array
         "500":
           description: Something went wrong
-      summary: Get collections.
+      summary: Get users.
       tags:
-      - collections
-  /collections/{id}:
-    get:
-      description: Get a collection.
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided information
       parameters:
-      - description: Collection UUID formatted ID
+      - description: User Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid request body
+        "500":
+          description: Internal Server Error
+      summary: Create a new user
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      description: Delete a user by its ID
+      parameters:
+      - description: user ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content - Successfully deleted
+        "400":
+          description: Invalid ID format
+        "500":
+          description: Internal Server Error - Failed to delete user
+      summary: Delete a user
+      tags:
+      - users
+    get:
+      description: Get a user.
+      parameters:
+      - description: User UUID formatted ID
         in: path
         name: id
         required: true
@@ -43,14 +90,40 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Collection'
+            $ref: '#/definitions/models.User'
         "422":
           description: Cannot parse id
         "500":
           description: Something went wrong
-      summary: Get a collection.
+      summary: Get a user.
       tags:
-      - collections
+      - users
+    put:
+      description: Update a user by its ID with new information
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated user data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: User successfully updated
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid ID format or invalid request body
+        "500":
+          description: Internal Server Error - Failed to update user
+      summary: Update a user
+      tags:
+      - users
 schemes:
 - http
 swagger: "2.0"

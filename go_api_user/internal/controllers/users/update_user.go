@@ -9,6 +9,16 @@ import (
     "github.com/gofrs/uuid"
 )
 
+// UpdateUser
+// @Tags         users
+// @Summary      Update a user
+// @Description  Update a user by its ID with new information
+// @Param        id      path      string       true  "User ID"
+// @Param        user    body      models.User  true  "Updated user data"
+// @Success      200     {object}  models.User  "User successfully updated"
+// @Failure      400     "Invalid ID format or invalid request body"
+// @Failure      500     "Internal Server Error - Failed to update user"
+// @Router       /users/{id} [put]
 func UpdateUser(w http.ResponseWriter, r *http.Request, service *users.UserService) {
     idStr := chi.URLParam(r, "id")
     id, err := uuid.FromString(idStr)

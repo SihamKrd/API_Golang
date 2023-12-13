@@ -18,20 +18,20 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/collections": {
+        "/users": {
             "get": {
-                "description": "Get collections.",
+                "description": "Get users.",
                 "tags": [
-                    "collections"
+                    "users"
                 ],
-                "summary": "Get collections.",
+                "summary": "Get users.",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Collection"
+                                "$ref": "#/definitions/models.User"
                             }
                         }
                     },
@@ -39,19 +39,57 @@ const docTemplate = `{
                         "description": "Something went wrong"
                     }
                 }
+            },
+            "post": {
+                "description": "Create a new user with the provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new user",
+                "parameters": [
+                    {
+                        "description": "User Data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request body"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
             }
         },
-        "/collections/{id}": {
+        "/users/{id}": {
             "get": {
-                "description": "Get a collection.",
+                "description": "Get a user.",
                 "tags": [
-                    "collections"
+                    "users"
                 ],
-                "summary": "Get a collection.",
+                "summary": "Get a user.",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Collection UUID formatted ID",
+                        "description": "User UUID formatted ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -61,7 +99,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Collection"
+                            "$ref": "#/definitions/models.User"
                         }
                     },
                     "422": {
@@ -71,17 +109,89 @@ const docTemplate = `{
                         "description": "Something went wrong"
                     }
                 }
+            },
+            "put": {
+                "description": "Update a user by its ID with new information",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updated user data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully updated",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid ID format or invalid request body"
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Failed to update user"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a user by its ID",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content - Successfully deleted"
+                    },
+                    "400": {
+                        "description": "Invalid ID format"
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Failed to delete user"
+                    }
+                }
             }
         }
     },
     "definitions": {
-        "models.Collection": {
+        "models.User": {
             "type": "object",
             "properties": {
-                "content": {
+                "email": {
                     "type": "string"
                 },
                 "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
