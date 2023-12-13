@@ -63,3 +63,15 @@ func (s *UserService) CreateUser(user models.User) error {
     }
     return nil
 }
+
+func (s *UserService) UpdateUser(id uuid.UUID, user models.User) error {
+    err := repository.UpdateUser(id, user)
+    if err != nil {
+        logrus.Errorf("error updating user: %s", err.Error())
+        return &models.CustomError{
+            Message: "Error updating user",
+            Code:    http.StatusInternalServerError,
+        }
+    }
+    return nil
+}
