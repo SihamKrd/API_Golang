@@ -10,11 +10,15 @@ from src.models.http_exceptions import *
 import src.repositories.users as users_repository
 
 
-users_url = "http://localhost:4000/users/"  # URL de l'API users (golang)
+users_url = "http://localhost:8080/users/"  # URL de l'API users (golang)
 
 
 def get_user(id):
     response = requests.request(method="GET", url=users_url+id)
+    return response.json(), response.status_code
+
+def get_all_users():
+    response = requests.request(method="GET", url=users_url)
     return response.json(), response.status_code
 
 
@@ -33,6 +37,7 @@ def create_user(user_register):
     # pour que les données entre API et BDD correspondent
     try:
         user_model.id = response.json()["id"]
+        print("Réponse de l'API externe:", response.json()["id"])
         users_repository.add_user(user_model)
     except Exception:
         raise SomethingWentWrong
@@ -79,3 +84,11 @@ def get_user_from_db(username):
 
 def user_exists(username):
     return get_user_from_db(username) is not None
+
+def delete_user(id):
+    if id != current_user.id:
+        raise Forbidden
+    users_repository.delete_user(current_user.id)
+    response = requests.request(method="DELETE", url=users_url+id)
+    return "", response.status_code
+
