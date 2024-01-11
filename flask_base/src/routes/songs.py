@@ -9,10 +9,13 @@ from src.schemas.song import SongUpdateSchema
 from src.schemas.errors import *
 import src.services.songs as songs_service
 
+from src.helpers.content_negotiation import content_negotiation
+
 # from routes import songs
 songs = Blueprint(name="songs", import_name=__name__)
 
 @songs.route('/<id>', methods=['GET'])
+@content_negotiation
 def get_song(id):
     """
     ---
@@ -55,6 +58,7 @@ def get_song(id):
 
 # Get all songs 
 @songs.route('/', methods=['GET'])
+@content_negotiation
 def get_all_songs():
     """
     ---
@@ -96,6 +100,7 @@ def get_all_songs():
 
 
 @songs.route('/', methods=['POST'])
+@content_negotiation
 @login_required
 def post_song():
     """
@@ -154,6 +159,7 @@ def post_song():
 
 
 @songs.route('/<id>', methods=['PUT'])
+@content_negotiation
 @login_required
 def put_song(id):
     """
@@ -229,6 +235,7 @@ def put_song(id):
 
 
 @songs.route('/<id>', methods=['DELETE'])
+@content_negotiation
 @login_required
 def delete_song(id):
     """

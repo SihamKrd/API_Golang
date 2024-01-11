@@ -10,11 +10,14 @@ from src.schemas.user import UserRegistrationSchema
 from src.schemas.errors import *
 import src.services.users as users_service
 
+from src.helpers.content_negotiation import content_negotiation
+
 # from routes import users
 users = Blueprint(name="users", import_name=__name__)
 
 
 @users.route('/<id>', methods=['GET'])
+@content_negotiation
 #@login_required
 def get_user(id):
     """
@@ -58,6 +61,7 @@ def get_user(id):
 
 # Get all users 
 @users.route('/', methods=['GET'])
+@content_negotiation
 # @login_required
 def get_all_users():
     """
@@ -97,6 +101,7 @@ def get_all_users():
 
 
 @users.route('/<id>', methods=['PUT'])
+@content_negotiation
 #@login_required
 def put_user(id):
     """
@@ -173,6 +178,7 @@ def put_user(id):
 
 
 @users.route('/<id>', methods=['DELETE'])
+@content_negotiation
 #@login_required
 def delete_user(id):
     """

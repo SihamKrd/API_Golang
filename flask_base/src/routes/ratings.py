@@ -9,6 +9,8 @@ from src.schemas.rating import RatingUpdateSchema
 from src.schemas.errors import *
 import src.services.ratings as ratings_service
 
+from src.helpers.content_negotiation import content_negotiation
+
 # from routes import ratings
 ratings = Blueprint(name="ratings", import_name=__name__)
 
@@ -16,6 +18,7 @@ ratings = Blueprint(name="ratings", import_name=__name__)
 
 # Get all ratings related to a song 
 @ratings.route('/<songID>/ratings', methods=['GET'])
+@content_negotiation
 def get_all_ratings(songID):
     """
     ---
@@ -56,6 +59,7 @@ def get_all_ratings(songID):
 
 
 @ratings.route('/<songID>/ratings/<id>', methods=['GET'])
+@content_negotiation
 def get_rating(id,songID):
     """
     ---
@@ -99,6 +103,7 @@ def get_rating(id,songID):
 
 
 @ratings.route('/<songID>/ratings', methods=['POST'])
+@content_negotiation
 @login_required
 def post_rating(songID):
     """
@@ -158,6 +163,7 @@ def post_rating(songID):
 
 
 @ratings.route('/<songID>/ratings/<id>', methods=['PUT'])
+@content_negotiation
 @login_required
 def put_rating(songID,id):
     """
@@ -238,6 +244,7 @@ def put_rating(songID,id):
 
 
 @ratings.route('/<songID>/ratings/<id>', methods=['DELETE'])
+@content_negotiation
 @login_required
 def delete_rating(songID,id):
     """
