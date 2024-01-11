@@ -15,7 +15,7 @@ import (
 // @Description  Update a user by its ID with new information
 // @Param        id      path      string       true  "User ID"
 // @Param        user    body      models.User  true  "Updated user data"
-// @Success      200     {object}  models.User  "User successfully updated"
+// @Success      200     {object}  models.Users  "User successfully updated"
 // @Failure      400     "Invalid ID format or invalid request body"
 // @Failure      500     "Internal Server Error - Failed to update user"
 // @Router       /users/{id} [put]
@@ -33,7 +33,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request, service *users.UserServi
         return
     }
 
-    if err := service.UpdateUser(id, user); err != nil {
+    if err := service.UpdateUser(id, &user); err != nil {
         http.Error(w, "Failed to update user", http.StatusInternalServerError)
         return
     }

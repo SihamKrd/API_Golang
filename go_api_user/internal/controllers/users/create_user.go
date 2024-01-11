@@ -6,8 +6,8 @@ import (
     "middleware/example/internal/models"
     "middleware/example/internal/services/users"
     "github.com/sirupsen/logrus"
+    "fmt"
 )
-
 // CreateUser
 // @Tags         users
 // @Summary      Create a new user
@@ -27,12 +27,15 @@ func CreateUser(w http.ResponseWriter, r *http.Request, service *users.UserServi
         return
     }
 
-    if err := service.CreateUser(user); err != nil {
+    if err := service.CreateUser(&user); err != nil {
         logrus.Errorf("error creating user: %s", err.Error()) // Log en cas d'erreur
         http.Error(w, "Failed to create user", http.StatusInternalServerError)
         return
     }
 
     w.WriteHeader(http.StatusCreated)
-    json.NewEncoder(w).Encode(user)
+    body, _ := json.Marshal(user)
+	_, _ = w.Write(body)
+    //json.NewEncoder(w).Encode(user)
+    fmt.Print("(controller)l'id user est : ",user.ID)
 }

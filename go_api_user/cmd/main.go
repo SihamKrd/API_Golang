@@ -18,7 +18,7 @@ func main() {
     defer helpers.CloseDB(db)
 
 	r := chi.NewRouter()
-	
+
 	userService := services.NewUserService(db)
 
 	r.Route("/users", func(r chi.Router) {
@@ -29,10 +29,10 @@ func main() {
 		r.Route("/{id}", func(r chi.Router) {
 			r.Use(users.Ctx)
 			r.Get("/", users.GetUser)
-			r.Put("/", func(w http.ResponseWriter, r *http.Request) { // Route PUT pour mettre à jour un utilisateur spécifique
+			r.Put("/", func(w http.ResponseWriter, r *http.Request) { // Route PUT pour mettre à jour un user spécifique
 				users.UpdateUser(w, r, userService)
 			})
-			r.Delete("/", func(w http.ResponseWriter, r *http.Request) { // Route DELETE pour supprimer une chanson spécifique
+			r.Delete("/", func(w http.ResponseWriter, r *http.Request) { // Route DELETE pour supprimer unen spécifique
 				users.DeleteUser(w, r, userService)
 			})
 		})

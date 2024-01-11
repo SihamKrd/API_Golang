@@ -7,6 +7,7 @@ import (
 	"middleware/example/internal/models"
 	repository "middleware/example/internal/repositories/users"
 	"net/http"
+	"fmt"
 )
 
 type UserService struct {
@@ -52,8 +53,12 @@ func GetUserById(id uuid.UUID) (*models.User, error) {
 	return user, err
 }
 
-func (s *UserService) CreateUser(user models.User) error {
-    err := repository.CreateUser(user)
+func (s *UserService) CreateUser(user *models.User) error {
+	userID := uuid.Must(uuid.NewV4())
+
+	user.ID = &userID
+	
+    err := repository.CreateUser(*user)
     if err != nil {
         logrus.Errorf("error creating user: %s", err.Error())
         return &models.CustomError{
@@ -61,11 +66,13 @@ func (s *UserService) CreateUser(user models.User) error {
             Code:    http.StatusInternalServerError,
         }
     }
+	fmt.Print("l'id user est : ",*user.ID)
     return nil
 }
 
-func (s *UserService) UpdateUser(id uuid.UUID, user models.User) error {
-    err := repository.UpdateUser(id, user)
+
+func (s *UserService) UpdateUser(id uuid.UUID, user *models.User) error {
+    err := repository.UpdateUser(id, *user)
     if err != nil {
         logrus.Errorf("error updating user: %s", err.Error())
         return &models.CustomError{
@@ -73,6 +80,7 @@ func (s *UserService) UpdateUser(id uuid.UUID, user models.User) error {
             Code:    http.StatusInternalServerError,
         }
     }
+	user.ID = &id
     return nil
 }
 
