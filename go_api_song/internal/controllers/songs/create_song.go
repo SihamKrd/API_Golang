@@ -26,7 +26,7 @@ func CreateSong(w http.ResponseWriter, r *http.Request, service *songs.SongServi
         return
     }
 
-    if err := service.CreateSong(song); err != nil {
+    if err := service.CreateSong(&song); err != nil {
         logrus.Errorf("error creating song: %s", err.Error()) // Log en cas d'erreur
         http.Error(w, "Failed to create song", http.StatusInternalServerError)
         return

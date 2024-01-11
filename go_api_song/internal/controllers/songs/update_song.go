@@ -33,7 +33,7 @@ func UpdateSong(w http.ResponseWriter, r *http.Request, service *songs.SongServi
         return
     }
 
-    if err := service.UpdateSong(id, song); err != nil {
+    if err := service.UpdateSong(id, &song); err != nil {
         http.Error(w, "Failed to update song", http.StatusInternalServerError)
         return
     }

@@ -56,11 +56,8 @@ func CreateSong(song models.Song) error {
     }
     defer helpers.CloseDB(db)
 
-    // Génération d'un nouvel UUID pour la chanson
-    songID := uuid.Must(uuid.NewV4())
-
     _, err = db.Exec("INSERT INTO songs (id, title, artist, album, genre) VALUES (?, ?, ?, ?, ?)", 
-                     songID.String(), song.Title, song.Artist, song.Album, song.Genre)
+                     song.Id.String(), song.Title, song.Artist, song.Album, song.Genre)
 	return err
 }
 

@@ -52,8 +52,12 @@ func GetSongById(id uuid.UUID) (*models.Song, error) {
 	return song, err
 }
 
-func (s *SongService) CreateSong(song models.Song) error {
-    err := repository.CreateSong(song)
+func (s *SongService) CreateSong(song *models.Song) error {
+	songID := uuid.Must(uuid.NewV4())
+
+	song.Id = &songID
+	
+    err := repository.CreateSong(*song)
     if err != nil {
         logrus.Errorf("error creating song: %s", err.Error())
         return &models.CustomError{
@@ -65,8 +69,8 @@ func (s *SongService) CreateSong(song models.Song) error {
 }
 
 
-func (s *SongService) UpdateSong(id uuid.UUID, song models.Song) error {
-    err := repository.UpdateSong(id, song)
+func (s *SongService) UpdateSong(id uuid.UUID, song *models.Song) error {
+    err := repository.UpdateSong(id, *song)
     if err != nil {
         logrus.Errorf("error updating song: %s", err.Error())
         return &models.CustomError{
@@ -74,6 +78,7 @@ func (s *SongService) UpdateSong(id uuid.UUID, song models.Song) error {
             Code:    http.StatusInternalServerError,
         }
     }
+	song.Id = &id
     return nil
 }
 
